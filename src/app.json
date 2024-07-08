@@ -1,0 +1,45 @@
+{
+  "darkmode": true,
+  "themeLocation": "theme.json",
+  "renderer": "skyline",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true
+    }
+  },
+  "componentFramework": "glass-easel",
+  "pages": [
+    "pages/home/index",
+    "pages/mine/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "@bgColor",
+    "navigationBarTextStyle": "@style",
+    "navigationBarTitleText": "vuemini-demo",
+    "backgroundColor": "@bgColor",
+    "backgroundColorTop": "@bgColor",
+    "backgroundColorBottom": "@bgColor"
+  },
+  "tabBar": {
+    "color": "@color",
+    "selectedColor": "@color",
+    "backgroundColor": "@bgColor",
+    "borderStyle": "@style",
+    "list": [
+      {
+        "text": "主页",
+        "pagePath": "pages/home/index",
+        "iconPath": "@homeIcon",
+        "selectedIconPath": "@homeSelectedIcon"
+      },
+      {
+        "text": "我",
+        "pagePath": "pages/mine/index",
+        "iconPath": "@mineIcon",
+        "selectedIconPath": "@mineSelectedIcon"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
