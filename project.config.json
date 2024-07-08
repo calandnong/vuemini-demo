@@ -36,7 +36,8 @@
     "minifyWXML": true,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "ignoreUploadUnusedFiles": true
+    "ignoreUploadUnusedFiles": true,
+    "compileWorklet": true
   },
   "compileType": "miniprogram",
   "simulatorType": "wechat",
