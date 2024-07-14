@@ -13,6 +13,7 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import { compile } from 'sass';
 
 const NODE_ENV = process.env.NODE_ENV || 'production';
 const __PROD__ = NODE_ENV === 'production';
@@ -112,6 +113,29 @@ async function processStyle(filePath) {
   fs.writeFile(destination, css);
 }
 
+async function processScss(filePath) {
+  const source = await fs.readFile(filePath, 'utf8');
+  const { plugins, options } = await postcssrc({ from: undefined });
+
+  const { css } = await postcss(plugins).process(source, options);
+
+  const destination = filePath
+    .replace('src', 'dist')
+    .replace(/\.scss$/, '.wxss');
+  // Make sure the directory already exists when write file
+  // await fs.copy(filePath, destination);
+
+  fs.writeFile(destination, css);
+
+  console.log('destination', destination);
+
+  const finalCss = compile(filePath).css;
+
+  console.log('finalCss', finalCss.includes('$color'));
+
+  fs.writeFile(destination, finalCss);
+}
+
 async function dev() {
   await fs.remove('dist');
   const cb = (filePath) => {
@@ -127,6 +151,11 @@ async function dev() {
 
     if (/\.css$/.test(filePath)) {
       processStyle(filePath);
+      return;
+    }
+
+    if (/\.scss$/.test(filePath)) {
+      processScss(filePath);
       return;
     }
 

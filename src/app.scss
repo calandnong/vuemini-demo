@@ -1,3 +1,5 @@
+$color: red;
+
 page {
   color: #181818;
   font-size: 28px;
@@ -13,6 +15,7 @@ page {
 @media (prefers-color-scheme: dark) {
   page {
     color: #fff;
+    color: $color;
     background: #181818;
   }
 }

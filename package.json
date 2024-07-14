@@ -11,7 +11,8 @@
     "test": "vitest",
     "dev": "cross-env NODE_ENV=development node build.js",
     "build": "cross-env NODE_ENV=production node build.js",
-    "fix": "node ./scripts/fix-instance.mjs"
+    "fix": "node ./scripts/fix-instance.mjs",
+    "sass:build": "sass ./src/pages/home/index.scss ./src/pages/home/index.css"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.7",
@@ -44,7 +45,9 @@
     "postcss": "^8.4.39",
     "postcss-load-config": "^6.0.1",
     "postcss-pxtorpx-pro": "^2.0.0",
+    "postcss-scss": "^4.0.9",
     "rollup": "^4.18.0",
+    "sass": "^1.77.6",
     "stylelint": "^16.6.1",
     "stylelint-config-standard": "^36.0.1",
     "terser": "^5.31.1",
