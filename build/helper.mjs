@@ -7,7 +7,6 @@ import { minimatch } from 'minimatch';
  * @returns {boolean} 如果值匹配模式，则返回true；否则返回false。
  */
 function matchesPattern(pattern, value) {
-  console.log(' minimatch(value, pattern)', pattern, value, minimatch(value, pattern));
   if (typeof pattern === 'string') {
       return minimatch(value, pattern);
   } else if (pattern instanceof RegExp) {
