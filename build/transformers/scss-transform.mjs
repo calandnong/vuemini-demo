@@ -3,7 +3,6 @@ import path from 'path';
 import postcss from 'postcss';
 import postcssrc from 'postcss-load-config';
 import * as sass from 'sass';
-console.log('dams', path.resolve('src/styles'));
 
 /**
  * @returns {import('./transform-type').Transform}
