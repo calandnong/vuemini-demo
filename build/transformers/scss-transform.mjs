@@ -22,7 +22,6 @@ export function scssTramsform() {
           path.resolve('src'),
         ],
       });
-      console.log(_code.css);
       const { css } = await postcss(plugins).process(_code.css, options);
       return {
         code: css,
