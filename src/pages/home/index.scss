@@ -1,4 +1,6 @@
 
+@import '../../styles/theme.scss';
+
 .home {
   text-align: center;
 }
@@ -23,5 +25,5 @@
 
 .box {
   border-radius: 50%;
-  background-color: aquamarine;
+  background-color: $error-color;
 }

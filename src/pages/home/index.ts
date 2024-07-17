@@ -8,7 +8,6 @@ defineComponent((_, ctx) => {
 
   console.log('instance.applyAnimatedStyle', ctx.applyAnimatedStyle);
 
-
   ctx.applyAnimatedStyle('.box', () => {
     'worklet';
     console.info('@@ ', offset.value)
@@ -36,6 +35,7 @@ defineComponent((_, ctx) => {
      */
     offset.value = timing(300, {
       duration: 1200,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       easing: (Easing as any).ease,
     }, () => { });
 
