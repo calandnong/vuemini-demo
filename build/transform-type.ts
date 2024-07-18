@@ -5,7 +5,8 @@ export interface TransformResult {
 
 export interface Transform {
   test: RegExp | string;
-  transform: (code: string, id: string) => TransformResult;
+  load?: (code: string, id: string) => void | Promise<void>;
+  transform?: (code: string, id: string) => TransformResult | Promise<TransformResult>;
   include?: string | RegExp | (string | RegExp)[];
   exclude?: string | RegExp | (string | RegExp)[];
 }

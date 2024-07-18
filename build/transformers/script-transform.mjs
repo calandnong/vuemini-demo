@@ -45,7 +45,7 @@ async function bundleModule(module) {
 }
 
 /**
- * @returns {import('./transform-type').Transform}
+ * @returns {import('../transform-type').Transform}
  */
 export function scriptTramsform() {
   return {

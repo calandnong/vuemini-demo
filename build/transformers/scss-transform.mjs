@@ -5,7 +5,7 @@ import postcssrc from 'postcss-load-config';
 import * as sass from 'sass';
 
 /**
- * @returns {import('./transform-type').Transform}
+ * @returns {import('../transform-type').Transform}
  */
 export function scssTramsform() {
   return {

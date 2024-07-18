@@ -5,6 +5,7 @@ import { templateTramsform } from './transformers/template-transform.mjs';
 import { cssTramsform } from './transformers/css-transform.mjs';
 import { scssTramsform } from './transformers/scss-transform.mjs'
 import { shouldInclude } from './helper.mjs';
+import { pageJsonTransform } from './transformers/page-json-transform.mjs';
 
 async function writeFileWithDirs(filePath, content) {
   const dir = path.dirname(filePath);
@@ -59,12 +60,25 @@ export class TransformManager {
         || (transformItem.test instanceof RegExp && transformItem.test.test(id))
       ) {
         const code = fs.readFileSync(id, 'utf-8').toString();
-        const result = await transformItem.transform(code, id);
-        let destination = id
-          .replace(this.sourceDir, this.targetDir);
-        if (result.ext) {
-          destination = destination.replace(path.extname(id), result.ext);
+        transformItem.load && (await transformItem.load(code, id));
+        /**
+         * @type {import('./transform-type').TransformResult}
+         */
+        const result = {
+          code,
+          ext: path.extname(id),
+        };
+        let destination = id.replace(this.sourceDir, this.targetDir);
+
+        if (transformItem.transform) {
+          const _result = await transformItem.transform(code, id);
+          if (!_result) throw new Error('tranform请返回result');
+          Object.assign(result, _result);
+          if (result.ext) {
+            destination = destination.replace(path.extname(id), result.ext);
+          }
         }
+
         await writeFileWithDirs(destination, result.code);
         return;
       }
@@ -79,5 +93,6 @@ export const transformManager = new TransformManager({
     templateTramsform(),
     cssTramsform(),
     scssTramsform(),
+    pageJsonTransform(),
   ],
 });

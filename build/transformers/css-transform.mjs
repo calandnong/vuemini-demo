@@ -3,7 +3,7 @@ import postcss from 'postcss';
 import postcssrc from 'postcss-load-config';
 
 /**
- * @returns {import('./transform-type').Transform}
+ * @returns {import('../transform-type').Transform}
  */
 export function cssTramsform() {
   return {
