@@ -6,6 +6,7 @@ import { cssTramsform } from './transformers/css-transform.mjs';
 import { scssTramsform } from './transformers/scss-transform.mjs'
 import { shouldInclude } from './helper.mjs';
 import { pageJsonTransform } from './transformers/page-json-transform.mjs';
+import { imgTransform } from './transformers/img-transform.mjs';
 
 async function writeFileWithDirs(filePath, content) {
   const dir = path.dirname(filePath);
@@ -94,5 +95,6 @@ export const transformManager = new TransformManager({
     cssTramsform(),
     scssTramsform(),
     pageJsonTransform(),
+    imgTransform(),
   ],
 });
