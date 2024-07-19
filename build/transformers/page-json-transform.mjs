@@ -1,9 +1,22 @@
 import path from 'path';
-import { parse } from 'parse-package-name';
 import fs from 'fs-extra';
 import { getPackageInfo } from 'local-pkg';
 import { MINIPROGRAM_NPM_PATH } from '../constants/index.mjs';
 
+
+const RE_SCOPED = /^(@[^\/]+\/[^@\/]+)(?:@([^\/]+))?(\/.*)?$/;
+const RE_NON_SCOPED = /^([^@\/]+)(?:@([^\/]+))?(\/.*)?$/;
+function parse(input) {
+  const m = RE_SCOPED.exec(input) || RE_NON_SCOPED.exec(input);
+  if (!m) {
+    return null;
+  }
+  return {
+    name: m[1] || "",
+    version: m[2] || "latest",
+    path: m[3] || ""
+  };
+}
 
 async function hasPkg(pkgName) {
   const info = await getPackageInfo(pkgName);
@@ -52,26 +65,33 @@ export function pageJsonTransform(options = {}) {
           return;
         }
         // 解析是否使用npm包
-        const { name: pkgName } = parse(componentPath);
-        if (await hasPkg(pkgName)) {
-          await addComponentPackage(pkgName);
+        const pkgPathInfo = parse(componentPath);
+        if (pkgPathInfo && (await hasPkg(pkgPathInfo.name))) {
+          await addComponentPackage(pkgPathInfo.name);
         }
       }
     },
-    async transform(code, id) {
+    async transform(code) {
       /** @type {Record<string, string>} */
       let finalCode = JSON.parse(code);
       const usingComponents = finalCode['usingComponents'] || {};
       for (const key in usingComponents) {
         /** @type {string} */
         let componentPath = usingComponents[key];
+        // 获取别名并按长度降序排序，确保更长的别名优先匹配
+        const aliasKeys = Object.keys(alias).sort((a, b) => b.length - a.length);
         // 支持alias
-        for (let key in alias) {
-
+        for (let key of aliasKeys) {
+          const regex = new RegExp(`^${key}(\\/|$)`);
+          if (regex.test(componentPath)) {
+            const aliasItem = alias[key];
+            componentPath = componentPath.replace(key, aliasItem);
+          }
         }
+        usingComponents[key] = componentPath;
       }
       return {
-        code: JSON.stringify(finalCode),
+        code: JSON.stringify(finalCode, null, 2),
         ext: '.json'
       }
     }

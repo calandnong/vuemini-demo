@@ -96,7 +96,9 @@ export const transformManager = new TransformManager({
     scssTramsform(),
     pageJsonTransform({
       alias: {
-        '@': path.resolve('src')
+        '@': '/api/test/demo',
+        '@/': '/api/test/demo/',
+        '@test': '/test'
       }
     }),
     imgTransform(),
