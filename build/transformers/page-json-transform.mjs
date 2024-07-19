@@ -1,9 +1,14 @@
 import path from 'path';
 import { parse } from 'parse-package-name';
-import hasPkg from 'has-pkg';
 import fs from 'fs-extra';
 import { getPackageInfo } from 'local-pkg';
 import { MINIPROGRAM_NPM_PATH } from '../constants/index.mjs';
+
+
+async function hasPkg(pkgName) {
+  const info = await getPackageInfo(pkgName);
+  return !!info;
+}
 
 const components = new Set();
 
@@ -19,8 +24,10 @@ async function addComponentPackage(pkgName) {
   components.add(pkgName);
   const pkgInfo = await getPackageInfo(pkgName);
   if (pkgInfo) {
+    if (!pkgInfo.packageJson.miniprogram) throw new Error('组件库请设置miniprogram字段'); 
+    const miniprogramPath = pkgInfo.packageJson.miniprogram;
     const pkgRootPath = path.dirname(pkgInfo.packageJsonPath);
-    fs.copy(pkgRootPath, path.resolve(MINIPROGRAM_NPM_PATH, pkgName));
+    await fs.copy(path.resolve(pkgRootPath, miniprogramPath), path.resolve(MINIPROGRAM_NPM_PATH, pkgName));
   }
 }
 
@@ -43,9 +50,8 @@ export function pageJsonTransform() {
         }
         // 解析是否使用npm包
         const { name: pkgName } = parse(componentPath);
-        if (hasPkg(pkgName)) {
+        if (await hasPkg(pkgName)) {
           await addComponentPackage(pkgName);
-          return;
         }
       }
     }
