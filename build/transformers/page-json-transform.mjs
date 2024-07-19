@@ -35,7 +35,10 @@ async function addComponentPackage(pkgName) {
  * @param {import('./page-json-transform-types').PageJsonTransfromOptions} options
  * @returns {import('../transform-type').Transform}
  */
-export function pageJsonTransform() {
+export function pageJsonTransform(options = {}) {
+  const {
+    alias
+  } = options;
   return {
     test: /\.json$/,
     async load(code) {
@@ -53,6 +56,18 @@ export function pageJsonTransform() {
         if (await hasPkg(pkgName)) {
           await addComponentPackage(pkgName);
         }
+      }
+    },
+    async transform(code, id) {
+      let finalCode = code;
+
+      // 支持alias
+      for (let key in alias) {
+        console.log(alias[key]);
+      }
+      return {
+        code: finalCode,
+        ext: '.json'
       }
     }
   }

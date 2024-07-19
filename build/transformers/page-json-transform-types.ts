@@ -1,3 +1,3 @@
 export interface PageJsonTransfromOptions {
-  componentLibs?: string[];
+  alias?: string[];
 }

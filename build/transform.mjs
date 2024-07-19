@@ -94,7 +94,11 @@ export const transformManager = new TransformManager({
     templateTramsform(),
     cssTramsform(),
     scssTramsform(),
-    pageJsonTransform(),
+    pageJsonTransform({
+      alias: {
+        '@': path.resolve('src')
+      }
+    }),
     imgTransform(),
   ],
 });
