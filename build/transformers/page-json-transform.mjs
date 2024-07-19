@@ -59,14 +59,19 @@ export function pageJsonTransform(options = {}) {
       }
     },
     async transform(code, id) {
-      let finalCode = code;
+      /** @type {Record<string, string>} */
+      let finalCode = JSON.parse(code);
+      const usingComponents = finalCode['usingComponents'] || {};
+      for (const key in usingComponents) {
+        /** @type {string} */
+        let componentPath = usingComponents[key];
+        // 支持alias
+        for (let key in alias) {
 
-      // 支持alias
-      for (let key in alias) {
-        console.log(alias[key]);
+        }
       }
       return {
-        code: finalCode,
+        code: JSON.stringify(finalCode),
         ext: '.json'
       }
     }
